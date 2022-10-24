@@ -22,7 +22,7 @@ final class RequestTest extends TestCase
             'age'  => 28,
         ];
 
-        $request = new Request($data);
+        $request = (new Request())->withQueryParams($data);
 
         $this->assertEquals($data, $request->getQueryParams());
         $this->assertNull($request->getParseBody());
@@ -32,7 +32,7 @@ final class RequestTest extends TestCase
     {
         $data = ['title' => 'Title'];
 
-        $request = new Request([], $data);
+        $request = (new Request())->withParsedBody($data);
 
         $this->assertEquals([], $request->getQueryParams());
         $this->assertEquals($data, $request->getParseBody());
