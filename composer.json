@@ -9,7 +9,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "Framework\\": "src/Framework"
+      "Framework\\": "src/Framework",
+      "Tests\\": "tests"
     }
   },
   "config": {
