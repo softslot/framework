@@ -1,0 +1,16 @@
+{
+  "name": "softslot/framework",
+  "license": "MIT",
+  "description": "small php framework",
+  "authors": [
+    {
+      "name": "Konstantin Korolenko"
+    }
+  ],
+  "config": {
+    "sort-packages": true
+  },
+  "require": {
+    "php": ">=7.4"
+  }
+}
