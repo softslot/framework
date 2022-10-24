@@ -6,7 +6,7 @@ chdir(dirname(__DIR__));
 
 require_once 'vendor/autoload.php';
 
-$request = new Request();
+$request = new Request($_GET, $_POST);
 $name = $request->getQueryParams()['name'] ?? 'Guest';
 
 echo "Hello, {$name}";
