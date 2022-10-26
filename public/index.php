@@ -1,30 +1,35 @@
 <?php
 
+chdir(dirname(__DIR__));
+require_once 'vendor/autoload.php';
+
 use Fig\Http\Message\StatusCodeInterface;
 use Framework\Http\ResponseSender;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\StreamFactory;
-use Slim\Psr7\Headers;
 use Slim\Psr7\Response;
 
-chdir(dirname(__DIR__));
-
-require_once 'vendor/autoload.php';
+use function Framework\Utils\isJsonRequest;
 
 ### Initialization
 
 $request = ServerRequestFactory::createFromGlobals();
 
+### Preprocessing
+
+if (isJsonRequest($request)) {
+    $request = $request->withParsedBody(json_decode($request->getBody()->getContents()));
+}
+
 ### Action
 
 $name = $request->getQueryParams()['name'] ?? 'Guest';
-
-$headers = new Headers([
-    'X-Developer' => 'Konstantin'
-]);
 $body = (new StreamFactory())->createStream("Hello, {$name}");
+$response = new Response(StatusCodeInterface::STATUS_OK, null, $body);
 
-$response = new Response(StatusCodeInterface::STATUS_OK, $headers, $body);
+# Postprocessing
+
+$response = $response->withHeader('X-Developer', 'Konstantin');
 
 ### Sending
 
