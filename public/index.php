@@ -1,7 +1,10 @@
 <?php
 
-use Framework\Http\RequestFactory;
-use Framework\Http\Response;
+use Fig\Http\Message\StatusCodeInterface;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\Factory\StreamFactory;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Response;
 
 chdir(dirname(__DIR__));
 
@@ -9,20 +12,24 @@ require_once 'vendor/autoload.php';
 
 ### Initialization
 
-$request = RequestFactory::fromGlobals();
+$request = ServerRequestFactory::createFromGlobals();
 
 ### Action
 
 $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-$response = (new Response("Hello, {$name}"))
-    ->withHeader('X-Developer', 'Konstantin');
+$headers = new Headers([
+    'X-Developer' => 'Konstantin'
+]);
+$body = (new StreamFactory())->createStream("Hello, {$name}");
+
+$response = new Response(StatusCodeInterface::STATUS_OK, $headers, $body);
 
 ### Sending
 
 header('HTTP/1.1 ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
-foreach ($response->getHeaders() as $name => $value) {
-    header($name . ':' . $value);
+foreach ($response->getHeaders() as $name => $values) {
+    header($name . ':' . implode(', ', $values));
 }
 
-echo $response->getBody();
+echo $response->getBody()->getContents();
