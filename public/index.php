@@ -28,5 +28,5 @@ $response = new Response(StatusCodeInterface::STATUS_OK, $headers, $body);
 
 ### Sending
 
-$emitter = new ResponseSender();
-$emitter->send($response);
+$responseSender = new ResponseSender();
+$responseSender->send($response);
