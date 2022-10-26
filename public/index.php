@@ -1,6 +1,7 @@
 <?php
 
 use Fig\Http\Message\StatusCodeInterface;
+use Framework\Http\ResponseSender;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
@@ -27,9 +28,5 @@ $response = new Response(StatusCodeInterface::STATUS_OK, $headers, $body);
 
 ### Sending
 
-header('HTTP/1.1 ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
-foreach ($response->getHeaders() as $name => $values) {
-    header($name . ':' . implode(', ', $values));
-}
-
-echo $response->getBody()->getContents();
+$emitter = new ResponseSender();
+$emitter->send($response);
