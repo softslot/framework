@@ -24,7 +24,7 @@ class RouterTest extends TestCase
         $this->assertEquals($nameGet, $result->getName());
         $this->assertEquals($handlerGet, $result->getHandler());
 
-        $result = $result->match($this->buildRequest('POST', '/blog'));
+        $result = $router->match($this->buildRequest('POST', '/blog'));
         $this->assertEquals($namePost, $result->getName());
         $this->assertEquals($handlerPost, $result->getHandler());
     }
@@ -76,7 +76,7 @@ class RouterTest extends TestCase
         $router = new Router($routes);
 
         $this->assertEquals('/blog', $router->generate('blog'));
-        $this->assertEquals('/blog/5', $router->generate('blog_show', ['id' => '\d+']));
+        $this->assertEquals('/blog/5', $router->generate('blog_show', ['id' => 5]));
     }
 
     public function testGenerateMissingAttributes(): void
