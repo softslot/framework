@@ -21,6 +21,6 @@ class ResponseSender
             }
         }
 
-        echo $response->getBody()->getContents();
+        echo $response->getBody();
     }
 }

@@ -14,9 +14,11 @@ class RouterTest extends TestCase
     public function testCorrectMethod(): void
     {
         $routes = new RouteCollection();
+        $handlerGet = fn () => 'handler_get';
+        $handlerPost = fn () => 'handler_post';
 
-        $routes->get($nameGet = 'blog', '/blog', $handlerGet = 'handler_get');
-        $routes->post($namePost = 'blog_edit', '/blog', $handlerPost = 'handler_post');
+        $routes->get($nameGet = 'blog', '/blog', $handlerGet);
+        $routes->post($namePost = 'blog_edit', '/blog', $handlerPost);
 
         $router = new Router($routes);
 
@@ -33,7 +35,7 @@ class RouterTest extends TestCase
     {
         $routes = new RouteCollection();
 
-        $routes->post('blog', '/blog', 'handler_post');
+        $routes->post('blog', '/blog', fn () => 'handler_post');
 
         $router = new Router($routes);
 
@@ -45,7 +47,7 @@ class RouterTest extends TestCase
     {
         $routes = new RouteCollection();
 
-        $routes->get($name = 'blog_show', '/blog/{id}', 'handler', ['id' => '\d+']);
+        $routes->get($name = 'blog_show', '/blog/{id}', fn () => 'handler', ['id' => '\d+']);
 
         $router = new Router($routes);
 
@@ -58,7 +60,7 @@ class RouterTest extends TestCase
     {
         $routes = new RouteCollection();
 
-        $routes->get('blog_show', '/blog/{id}', 'handler', ['id' => '\d+']);
+        $routes->get('blog_show', '/blog/{id}', fn () => 'handler', ['id' => '\d+']);
 
         $router = new Router($routes);
 
@@ -70,8 +72,8 @@ class RouterTest extends TestCase
     {
         $routes = new RouteCollection();
 
-        $routes->get('blog', '/blog', 'handler');
-        $routes->get('blog_show', '/blog/{id}', 'handler', ['id' => '\d+']);
+        $routes->get('blog', '/blog', fn () => 'handler');
+        $routes->get('blog_show', '/blog/{id}', fn () => 'handler', ['id' => '\d+']);
 
         $router = new Router($routes);
 
@@ -83,7 +85,7 @@ class RouterTest extends TestCase
     {
         $routes = new RouteCollection();
 
-        $routes->get($nameGet = 'blog_show', '/blog/{id}', 'handler', ['id' => '\d+']);
+        $routes->get($nameGet = 'blog_show', '/blog/{id}', fn () => 'handler', ['id' => '\d+']);
 
         $router = new Router($routes);
 
